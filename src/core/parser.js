@@ -12,7 +12,6 @@ _(tool).extend({
 		var annotations = this.parseAnnotations(fileContent); 
 		ast.files = ast.files || {}; 
 		var file = ast.files[filePath] = ast.files[filePath] || {}; 
-		file
 		//TODO: consider the case when the annotation already exists ? 
 		_(annotations).each(function(name, a)
 		{

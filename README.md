@@ -5,23 +5,31 @@
 
 #About
 
+candombe is a tool where user give list of files to extract annotations from them. Annotations are just text markings or patterns like for example ```@name some text``` . 
+
+##Architecture
+The tool itself is designed ot be *very simple and generic*: extract patterns /annotations from a list files. So an annotation consists in a name and a text. The extraction implementation is very dumb: the text of each annotation goes from the annotation begginign to the next annotation, almost unusable. 
+
+But then, candombe was also designed to be extendable, and the cools things we can do with it are currently implemented as features or plugins. For example, , cool features like annotation extraction from javascript comments, annotation parentship, etc are implemented as plugins that enhance this core. 
+
+#History
+
 This project comes after developing short-jsdoc. The annotation parsing and syntax requirements are mostly based on that 'project conclusions' and the idea for the future is that short-jsdoc is based on this project.
+
 
 #Usage in the command line
 
-Extract all the annotations and files information to file output.json
+Extract all the annotations and files information to stdout
 
-    node index.js --input "./test/**/*.js" --output output.json
+    node src/cli/index.js --input "./test/**/*.js"
 
 IMPORTANT: remember to use comillas "" for writing globs, if not your shell will perform the unglob (badly)
 
-#Usage in node
+
+#Node API
 
     TODO
 
-#Architecture
-
-Designed to be very generic, just to solve the problem of extracting annotations from files. Designed to be extendable, BTW, the cool features like annotation extraction from javascript, annotation parentship, etc are implemented as plugins. 
 
 #Example
 
@@ -70,6 +78,36 @@ This feature is needed for example, to implement problems like javadoc/jsdoc in 
     }); 
     var files = parser.readFiles('/home/sg/project1/**')
     var aast = parser.parse(files);
+
+
+
+#Usage in the browser
+If for any reason you need to use candombe on the browser it is possible thanks to browserify. Just install gulp and execute ```gulp javascript```, this will generate file ```dist/js/candombe.js``` and we can execute the tool in a html file like the following: 
+
+    <html>
+    <head>
+    <script src="../../dist/js/candombe.js"></script>
+    </head>
+    <body>
+    <script>
+    var candombe = require('candombe')
+    ,   _ = require('underscore'); 
+    var files = [
+        {name: 'foo/bar.js', content: '@name1 text text text \n\n\t@name2 kjsdhf kjshfdk'}
+    ,   {name: 'pepe/gugu.js', content: '@pepe text text text \n\n\t@gugu kjsdhf kjshfdk'}
+    ]; 
+    var ast = {}; 
+    _(files).each(function(file)
+    {
+        candombe.parseFile(ast, file.name, file.content); 
+    }); 
+    console.log(ast)
+    </script>
+    </body>
+    </html>
+
+
+
 
 #Requirements / Roadmap / TODO
 
