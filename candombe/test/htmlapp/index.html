@@ -1,0 +1,26 @@
+<!-- just testing if the tool can be run in the browser -->
+<html>
+<head>
+<script src="../../dist/js/candombe.js"></script>
+</head>
+<body>
+<script>
+var candombe = require('candombe')
+,	_ = require('underscore'); 
+
+// candombe.reset(); 
+
+var files = [
+	{name: 'foo/bar.js', content: '@name1 text text text \n\n\t@name2 kjsdhf kjshfdk'}
+,	{name: 'pepe/gugu.js', content: '@pepe text text text \n\n\t@gugu kjsdhf kjshfdk'}
+]; 
+
+var ast = {}; 
+_(files).each(function(file)
+{
+	candombe.parseFile(ast, file.name, file.content); 
+}); 
+console.log(ast)
+</script>
+</body>
+</html>
