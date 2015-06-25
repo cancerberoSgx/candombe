@@ -1,3 +1,5 @@
+//in the cli folder we have the specifics node API like path, fs, globs, etc for reading the files from fs.
+
 var glob = require('glob').sync
 ,	args = require('yargs').argv
 ,	fs = require('fs')
@@ -37,8 +39,14 @@ _(tool).extend({
 		}
 		//so now files is an array
 		var	ast = {}; 
+
+		// console.log('files', files)
 		_(files).each(function(file)
 		{
+			if(!fs.lstatSync(file).isFile())
+			{
+				return;
+			}
 			var content = fs.readFileSync(file).toString();
 			self.parseFile(ast, file, content); 
 		}); 
@@ -60,7 +68,5 @@ _(tool).extend({
 		}
 	}
 }); 
-
-tool.mainCmd();
 
 module.exports = tool; 

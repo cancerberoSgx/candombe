@@ -2,7 +2,7 @@
   "name": "candombe",
   "version": "1.0.0",
   "description": "very simple annotation parsing tool for JavScript code",
-  "main": "index.js",
+  "main": "./src/cli/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

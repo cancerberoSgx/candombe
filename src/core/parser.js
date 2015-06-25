@@ -9,21 +9,38 @@ _(tool).extend({
 	// object as the ast and it will be poblated. Note: This public signature tries to deacoplate from fs, i.e. be able to do it also using memory buffers.
 	parseFile: function(ast, filePath, fileContent)
 	{
-		var annotations = this.parseAnnotations(fileContent); 
 		ast.files = ast.files || {}; 
 		var file = ast.files[filePath] = ast.files[filePath] || {}; 
+
+		var annotations = this.parseAnnotations(ast, {name: filePath, content: fileContent}); 
+
+		file.annotations = annotations; 
 		//TODO: consider the case when the annotation already exists ? 
-		_(annotations).each(function(name, a)
-		{
-			file[name]
-		})
+		// _(annotations).each(function(name, a)		{			// file[name]		})
 	}
 
-,	parseAnnotations: function(content)
+,	parseAnnotations: function(ast, file)
 	{
-		//
-		regexp = /\s*@(\w+)\s*(\{[\w<>\|, #:\(\)\.]+\}){0,1}\s*([\w\._\$]+){0,1}([.\s\w\W]*)/gmi;
-		return [{name:'foo',text:'sometext1'},{name:'foo2',text:'sometext2'},{name:'foo3',text:'sometext3'}];
+		//TODO: define a pluigin container for this stage : parseAnnotationPlugins
+		// what it is now is a first default test implementation
+		//default annotation regex
+		var content = file.content
+		,	annotationRegexp = /@([^@\s]+)\s+([^@]+)/gmi
+		,	result
+		,	output = [];
+		do 
+		{
+			result = annotationRegexp.exec(content); 
+			if(result)
+			{
+				var node = {name: result[1], text: result[2]}; 
+				output.push(node); 
+			}
+			// console.log('log1', file.name, content, result); 
+		}
+		while(result);
+		// return [1,2,3];//[{name:'foo',text:'sometext1'},{name:'foo2',text:'sometext2'},{name:'foo3',text:'sometext3'}];
+		return output; 
 	}
 }); 
 

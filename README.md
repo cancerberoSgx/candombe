@@ -1,35 +1,43 @@
 
-##Candombe: tool for extracting annotations from files, in a very generic way.
+##Candombe: 
+
+###tool for extracting annotations from files, in a very generic way.
+
 
 (WIP)
 
 #About
 
-candombe is a tool where user give list of files to extract annotations from them. Annotations are just text markings or patterns like for example ```@name some text``` . 
+Candombe is a command line tool to extract text patterns from files - we cal these patterns annotations which commonly have the syntax ```@name some text``` . Are commonly used in programming languages to express meta information in comments. 
 
-##Architecture
-The tool itself is designed ot be *very simple and generic*: extract patterns /annotations from a list files. So an annotation consists in a name and a text. The extraction implementation is very dumb: the text of each annotation goes from the annotation begginign to the next annotation, almost unusable. 
+Candombe is very generic and configurable and comes with plugins for extracting annotations from JavaScript/Java/php/etc source code comments, excel spreadsheets, xml/html, pdf, etc. The annotation pattern is configurable and also the output. 
 
-But then, candombe was also designed to be extendable, and the cools things we can do with it are currently implemented as features or plugins. For example, , cool features like annotation extraction from javascript comments, annotation parentship, etc are implemented as plugins that enhance this core. 
+It's designed ot be *very simple and generic*: extract patterns /annotations from a list files. At this core level, an annotation consists simply in a name and a text. The default extraction implementation is very dumb: the text of each annotation goes from the annotation begginign to the next annotation, almost unusable. 
 
-#History
+But then, candombe was also designed to be extendable, BTW the cools things we can do with it are currently implemented as plugins that uses this core and enhances its output/input. For example, annotation extraction from javascript source comments, or xml spreadsheets text is implemented as plugins. Also cool fieatures like annotation parentship.
 
-This project comes after developing short-jsdoc. The annotation parsing and syntax requirements are mostly based on that 'project conclusions' and the idea for the future is that short-jsdoc is based on this project.
+##History
+
+This project comes after developing short-jsdoc. The annotation parsing and syntax requirements in candombe are mostly based on that 'project conclusions' and the idea for the future is that short-jsdoc is based on this project.
 
 
 #Usage in the command line
 
 Extract all the annotations and files information to stdout
 
-    node src/cli/index.js --input "./test/**/*.js"
+    node src/cli/main.js --input "./test/sampleFolder/**/*.js
 
 IMPORTANT: remember to use comillas "" for writing globs, if not your shell will perform the unglob (badly)
 
-
 #Node API
 
-    TODO
-
+    var candombe = require('candombe');
+    // var candombe = require('../../src/cli/index');
+    var ast = candombe.main({
+        input: '../sampleFolder/**/*.js'
+    // ,    output: 'output.json'
+    }); 
+    console.log(ast) 
 
 #Example
 
@@ -79,9 +87,8 @@ This feature is needed for example, to implement problems like javadoc/jsdoc in 
     var files = parser.readFiles('/home/sg/project1/**')
     var aast = parser.parse(files);
 
-
-
 #Usage in the browser
+
 If for any reason you need to use candombe on the browser it is possible thanks to browserify. Just install gulp and execute ```gulp javascript```, this will generate file ```dist/js/candombe.js``` and we can execute the tool in a html file like the following: 
 
     <html>
@@ -111,20 +118,14 @@ If for any reason you need to use candombe on the browser it is possible thanks 
 
 #Requirements / Roadmap / TODO
 
-this project must be very generic: a tool for extracting annotations from text files. An annotation is a pattern with a name and a text, just that. By default this pattern is something like this:
-
-    @foo some text here 
-
-where 'foo' would be the annotation's name and 'some text here' the annotation's text.
-
-The core of the application only know about these concepts: a list of files that contains a list of annotations (with properties 'name' and 'text'). All the rest of the features are implemented as plugins that transform the input or output, for example: js/xml parsing, parentshipt relations, jsdoc/javadoc, etc. A list of these kind of features:
-
  * agnostic to input format (js,xml,txt,html) . i.e js source parsing is a feature implemented in as a feature/plugin.
  * agnostic to output format. The base is files that contains annotations. Other things like parentship are implemented as a feature/plugin.
  * agnostic to custom regexp for matching annotations in files.
  * other output structures
  * annotation parentship is a plugin
  * not limited to .js files. js comment parsing is a plugin
- * optionally include files information in the ast: {files: {'foo.js': {annotations: [{},{}...]}}
- * build a the ast syntax output for performance: ast.$module.fruits.$class.Banana.$methods.setColor.$params.color instead of having to call forEach for finding.
  * re-use short-jsdoc  parsing parts like the comment preprocessing (fixes for detecting line comments blocks, preserving text spaces, etc.). Resuse also from the part of nodejs app.
+ * idea: build a the ast syntax output for performance: ast.$module.fruits.$class.Banana.$methods.setColor.$params.color instead of having to call forEach for finding.
+ * runs in the browser
+
+inputPlugins, outputPlugin
