@@ -1,5 +1,5 @@
-var tool = require('./core/tool');
+var tool = require('./core/index');
 
-tool = require('./core/parser');
+require('./plugin/index'); 
 
 module.exports = tool;

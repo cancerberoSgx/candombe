@@ -1,1 +1,1 @@
-kaj shdkja s @something in the text
+// @class Apple kaj shdkja s @something in the text

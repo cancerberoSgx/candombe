@@ -10,11 +10,9 @@
 
 Candombe is a command line tool to extract text patterns from files - we cal these patterns annotations which commonly have the syntax ```@name some text``` . Are commonly used in programming languages to express meta information in comments. 
 
-Candombe is very generic and configurable and comes with plugins for extracting annotations from JavaScript/Java/php/etc source code comments, excel spreadsheets, xml/html, pdf, etc. The annotation pattern is configurable and also the output. 
+It's designed ot be *very simple and generic*: extract patterns /annotations from a list files - only those concepts. At this core level, an annotation consists simply in a name and a text. The default extraction implementation is very dumb: the text of each annotation goes from the annotation begginin to the next annotation, almost unusable. 
 
-It's designed ot be *very simple and generic*: extract patterns /annotations from a list files. At this core level, an annotation consists simply in a name and a text. The default extraction implementation is very dumb: the text of each annotation goes from the annotation begginign to the next annotation, almost unusable. 
-
-But then, candombe was also designed to be extendable, BTW the cools things we can do with it are currently implemented as plugins that uses this core and enhances its output/input. For example, annotation extraction from javascript source comments, or xml spreadsheets text is implemented as plugins. Also cool fieatures like annotation parentship.
+But then, candombe was also designed to be extendable, BTW the cools things we can do with it are currently implemented as plugins that uses this core and enhances its output/input. For example, annotation extraction from javascript source comments, or xml spreadsheets text is implemented as plugins. Or also cool semantic features like annotation parentship.
 
 ##History
 

@@ -6,7 +6,9 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
-var gutil = require('gulp-util');
+var gutil = require('gulp-util')
+,	map = require('map-stream')
+;
 
 gulp.task('javascript', function () {
 	// set up the browserify instance on a task basis
@@ -27,6 +29,24 @@ gulp.task('javascript', function () {
 		.pipe(gulp.dest('./dist/js/'));
 });
 
+gulp.task('jsdoc', function () 
+{
 
+	gulp.src('')
+	.pipe(map(function (file, cb)
+	{
+	})); 
+
+				.pipe(package_manager.handleOverrides());
+	return b.bundle()
+		.pipe(source('candombe.js'))
+		.pipe(buffer())
+		.pipe(sourcemaps.init({loadMaps: true}))
+				// Add transformation tasks to the pipeline here.
+				// .pipe(uglify())
+				.on('error', gutil.log)
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('./dist/js/'));
+});
 
 // browserify({entries: './src/index.js'}).bundle() but then I load the generated script in a html doc

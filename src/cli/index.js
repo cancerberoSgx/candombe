@@ -63,7 +63,7 @@ _(tool).extend({
 		}
 		if(error)
 		{
-			console.log('Command error, Usage example: \n\tnode index.js --input some/folder/**/*.js'); 
+			console.log('Command error, Usage example: \n\tnode index.js --input "some/folder/**/*.js"'); 
 			process.exit(1);
 		}
 	}
