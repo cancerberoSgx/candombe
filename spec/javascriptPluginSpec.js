@@ -10,6 +10,8 @@ describe('javascriptPlugin', function()
 				'//@class Animal @class Dog ' + '\n' +
 				'//a dog is the best humans friend' + '\n' +
 				'//@extends Animal' + '\n' +
+				'/*because it has no annotations this block comment should be ignored*/' + '\n' +
+
 				''
 		}
 
@@ -24,6 +26,8 @@ describe('javascriptPlugin', function()
 		expect(ann[1].text).toContain('a dog is the best humans friend'); 
 		expect(ann[2].name).toBe('extends'); 
 		expect(ann[2].text).toContain('Animal'); 
+		expect(ann[2].text).not.toContain('because it has no annotations this block comment should be ignored'); 
+		// console.log(ann[2].text)
 
 	})
 })

@@ -77,8 +77,7 @@ This feature is needed for example, to implement problems like javadoc/jsdoc in 
 
 #Parentship configuration
 
-    var parser = require('sap');
-    parser.setParentship({
+    candombe.setParentship({
         'class': 'module'
     ,   'version': ['module', 'class'] 
     }); 

@@ -5,13 +5,14 @@ var tool = require('../../core/parser')
 
 var plugin = {
 
-	execute: function(file)
+	execute: function(file, context)
 	{		
+		var ast, candombe = context.instance; 
+
 		if(path.extname(file.name) !== '.js')
 		{
 			return file;
 		}
-		var ast;
 		try 
 		{
 			var esprimaConfig = {
@@ -20,7 +21,8 @@ var plugin = {
 			,	comment: true		
 			}; 
 			ast = esprima.parse(file.content, esprimaConfig); 
-			this.normalizeComments(file, ast); 
+			// console.log(candombe)
+			this.normalizeComments(file, ast, candombe); 
 			file.content = this.dumpComments(ast); 
 		}  
 		catch(ex)
@@ -47,12 +49,15 @@ var plugin = {
 		})
 		return a.join('\n')
 	}
-,	normalizeComments: function(file, ast)
+,	normalizeComments: function(file, ast, candombe)
 	{
 		var i = 0
 		,	comments = ast.comments
 		;
 	
+		//for the next algorithm to work we add a dummy block comment at the end that will be ignored.
+		comments.push({type: 'Block', value: '', range: [0,0]}); 
+
 		var lineCommentSeparator = '\n';
 
 		while(i < comments.length - 1)
@@ -63,9 +68,9 @@ var plugin = {
 			if(c.type==='Block')
 			{
 				//just remove block comments that don't contain annotations from the ast
-				if(!this.annotationRegexp.test(c.value.test()))
+				if(!candombe.annotationRegexp.test(c.value))
 				{
-					console.log('block comment dont contain any annotation removing it: '+c.value); 
+					comments.splice(i, 1); 
 				}
 				i++;
 			}

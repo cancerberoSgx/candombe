@@ -26,7 +26,7 @@ PluginContainer.prototype.execute = function(input, options)
 	var result = input;
 	this.visitPlugins(function(plugin)
 	{
-		result = plugin.execute(result);
+		result = plugin.execute(result, options);
 	}); 
 	return result; 
 }; 

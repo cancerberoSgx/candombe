@@ -6,9 +6,11 @@ var _ = require('underscore')
 var tool = require('./tool');
 _(tool).extend({
 
-	// @property {PluginContainer} fileContentPlugins plugins registered here have the responsibility of extracting the annotation text from a
+	// @property {PluginContainer} fileContentPlugins plugins registered here have the responsibility of extracting the content from which annotations are parsed. 
 	// certain type of file. For example, one plugin could be responsible of extracting comments from javascript files, other the text from excel files, etc.
 	fileContentPlugins: new PluginContainer()
+
+,	filePostProcessingPlugins: new PluginContainer()
 
 	// @method parseFile Public parsing main method that must be called for each file you want to parse. In the first call juist pass an empty
 	// object as the ast and it will be poblated. Note: This public signature tries to uncouple from fs, i.e. be able to do it also using memory buffers.
@@ -34,11 +36,17 @@ _(tool).extend({
 				, content: fileContent
 		}; 
 
-		fileDesc = this.fileContentPlugins.execute(fileDesc); 
+		var pluginContext = {instance: this}; 
+		fileDesc = this.fileContentPlugins.execute(fileDesc, pluginContext); 
 
 		var annotations = this.parseAnnotations(ast, fileDesc); 
 
 		fileNode.annotations = annotations; 
+
+
+		fileNode = this.filePostProcessingPlugins.execute(fileNode, pluginContext); 
+		ast.files[filePath] = fileNode; //reasign again 
+
 		//TODO: consider the case when the annotation already exists ? 
 		// _(annotations).each(function(name, a)		{			// file[name]		})
 	}
